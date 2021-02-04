@@ -12,17 +12,25 @@ namespace _2LR
             public int SchoolNumber;
             public int Scores;
         }
-        struct School
-        {
-            public int kolstudent;
-        }
         static void Main(string[] args)
         {
             Console.WriteLine("Введите количество строк для считывания");
             int N = Convert.ToInt32(Console.ReadLine());
-            Student[] list = Readfile(N);
-            OutArray(N, list);
-            Solution(N, list);
+            Console.WriteLine("Выберите способ А(1) В(2)");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            if(choice==1)
+            {
+                Student[] list = Readfile(N);
+                OutArray(N, list);
+                Solution(N, list);
+            }
+            if(choice==2)
+            {
+                double[,] School = ReadFile2(N);
+                Out(School);
+                Solution2(School);
+            }
+            
             
         }
         static Student[] Readfile(int n)
@@ -81,7 +89,6 @@ namespace _2LR
                     {
                         kolstudent[j]++;
                         MidlleScore[j] += list[i].Scores;
-                        
                     }
                 }
                 MidlleScore[j]=MidlleScore[j]/kolstudent[j];
@@ -94,7 +101,12 @@ namespace _2LR
                 if (MidlleScore[i] == max)
                     res++;
             }
-            if(res==1)
+            OutResult(res,max,MidlleScore);
+            //Console.WriteLine(max);
+        }
+        static void OutResult(int res, double max, double[] MidlleScore)
+        {
+            if (res == 1)
             {
                 for (int i = 0; i < MidlleScore.Length; i++)
                 {
@@ -111,7 +123,63 @@ namespace _2LR
                     if (MidlleScore[i] == max)
                         Console.WriteLine("Самый высокий балл = {0} у школы №{1}", max, i + 1);
                 }
-            //Console.WriteLine(max);
+        }
+        static double[,] ReadFile2(int n)
+        {
+            int counter = 0;
+            string path = @"C:\Users\User\source\repos\PI\2LR\StudentList.txt";
+            using StreamReader sr = new StreamReader(path, System.Text.Encoding.Default);
+            string line;
+            double[,] mas = new double[100, 4];
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (counter == n) break;
+                //Console.WriteLine(line);
+                string[] words = line.Split(new char[] { ';' });
+                for(int j=0;j<100;j++)
+                {
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (i == 1)
+                            if (j == int.Parse(words[i])-1)
+                            {
+                                mas[j,0] = int.Parse(words[i]);
+                                mas[j, 2] += int.Parse(words[i+1]);
+                                mas[j, 1]++;
+                            }
+                    }
+                }
+                for(int i=0;i<100;i++)
+                {
+                    mas[i, 3] = mas[i, 2] / mas[i, 1];
+                }
+                counter++;
+            }
+            return mas;
+        }
+        static void Solution2(double [,] mas)
+        {
+            double max = -1;
+            for(int i=0;i<100;i++)
+                if (mas[i, 3] > max)
+                    max = mas[i, 3];
+            for(int i=0;i<100;i++)
+            {
+                if (mas[i, 3] == max)
+                    Console.WriteLine("Самый высокий средний балл ({0}) у школы {1}", mas[i,3], mas[i, 0]);
+            }
+        }
+        static void Out(double [,] mas)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                if (mas[i, 0] == 0)
+                    break;
+                for (int j = 0; j < 4; j++)
+                    Console.Write($"{mas[i, j]} \t");
+                Console.WriteLine();
+            }
         }
     }
+        
 }
