@@ -16,20 +16,11 @@ namespace _2LR
         {
             Console.WriteLine("Введите количество строк для считывания");
             int N = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Выберите способ А(1) В(2)");
-            int choice = Convert.ToInt32(Console.ReadLine());
-            if(choice==1)
-            {
-                Student[] list = Readfile(N);
-                OutArray(N, list);
-                Solution(N, list);
-            }
-            if(choice==2)
-            {
-                double[,] School = ReadFile2(N);
-                Out(School);
-                Solution2(School);
-            }
+            Student[] list = Readfile(N);
+            //ReadFile2(N);
+            OutArray(N, list);
+            Solution(N, list);
+
         }
         static Student[] Readfile(int n)
         {
@@ -41,6 +32,7 @@ namespace _2LR
             while ((line = sr.ReadLine()) != null)
             {
                 if (counter == n) break;
+                //Console.WriteLine(line);
                 string[] words = line.Split(new char[] { ';' });
                 for (int i = 0; i < words.Length; i++)
                 {
@@ -48,13 +40,16 @@ namespace _2LR
                     if (i == 1) { list[counter].SchoolNumber = int.Parse(words[i]); }
                     if (i == 2) { list[counter].Scores = int.Parse(words[i]); }
                 }
+                //Console.WriteLine(list[counter].Name);
+                //Console.WriteLine(list[counter].SchoolNumber);
+                //Console.WriteLine(list[counter].Scores);
                 counter++;
             }
             return list;
         }
         static void OutArray(int n, Student[] list)
         {
-            for(int i=0;i<n;i++)
+            for (int i = 0; i < n; i++)
             {
                 Console.WriteLine("Ученик {0} школы номер {1} набрал {2} балл(ов)", list[i].Name, list[i].SchoolNumber, list[i].Scores);
             }
@@ -64,35 +59,39 @@ namespace _2LR
             int kolschool = 1;
             double max = 0;
             int res = 0;
-            for(int i=0;i<n;i++)
+            for (int i = 0; i < n; i++)
             {
-                if (i != (n-1))
+                if (i != (n - 1))
+                {
                     if (list[i].SchoolNumber != list[i + 1].SchoolNumber)
                         kolschool++;
+                }
             }
+            //Console.WriteLine(kolschool);
             double[] MidlleScore = new double[kolschool];
             int[] kolstudent = new int[kolschool];
-            for(int j = 0; j < MidlleScore.Length; j++)
+            for (int j = 0; j < MidlleScore.Length; j++)
             {
-                for(int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
                 {
-                    if(list[i].SchoolNumber==j+1)
+                    if (list[i].SchoolNumber == j + 1)
                     {
                         kolstudent[j]++;
                         MidlleScore[j] += list[i].Scores;
                     }
                 }
-                MidlleScore[j]=MidlleScore[j]/kolstudent[j];
+                MidlleScore[j] = MidlleScore[j] / kolstudent[j];
                 if (MidlleScore[j] > max)
                     max = MidlleScore[j];
-                Console.WriteLine("Школа №{0} имеет балл {1}", j+1, MidlleScore[j]);
+                Console.WriteLine("Школа №{0} имеет средний балл {1}", j + 1, MidlleScore[j]);
             }
-            for(int i=0;i<MidlleScore.Length;i++)
+            for (int i = 0; i < MidlleScore.Length; i++)
             {
                 if (MidlleScore[i] == max)
                     res++;
             }
-            OutResult(res,max,MidlleScore);
+            OutResult(res, max, MidlleScore);
+            //Console.WriteLine(max);
         }
         static void OutResult(int res, double max, double[] MidlleScore)
         {
@@ -114,60 +113,55 @@ namespace _2LR
                         Console.WriteLine("Самый высокий балл = {0} у школы №{1}", max, i + 1);
                 }
         }
-        static double[,] ReadFile2(int n)
+        /*static void ReadFile2(int n)
         {
-            int counter = 0;
+            int count = 0;
             string path = @"C:\Users\User\source\repos\PI\2LR\StudentList.txt";
+            int[,] School = new int[100,2];
+            int[] Scores = new int[100];
             using StreamReader sr = new StreamReader(path, System.Text.Encoding.Default);
             string line;
-            double[,] mas = new double[100, 4];
             while ((line = sr.ReadLine()) != null)
             {
-                if (counter == n) break;
+                if (count == n) break;
+                //Console.WriteLine(line);
                 string[] words = line.Split(new char[] { ';' });
-                for(int j=0;j<100;j++)
+                /*for (int i = 0; i < words.Length; i++)
                 {
-                    for (int i = 0; i < words.Length; i++)
-                    {
-                        if (i == 1)
-                            if (j == int.Parse(words[i])-1)
+                    if (i == 0) { list[counter].Name = words[i]; }
+                    if (i == 1) { list[counter].SchoolNumber = int.Parse(words[i]); }
+                    if (i == 2) { list[counter].Scores = int.Parse(words[i]); }
+                    for(int j=0;j<School.Length;j++)
+                        for(int c=0;c<School.Length;c++)
+                        {
+                            if(i==1&int.Parse(words[i])==j+1)
                             {
-                                mas[j,0] = int.Parse(words[i]);
-                                mas[j, 2] += int.Parse(words[i+1]);
-                                mas[j, 1]++;
+                                School[j,0] = int.Parse(words[i]);
+                                School[j, 1] += int.Parse(words[i]);
                             }
-                    }
+                        }
                 }
-                for(int i=0;i<100;i++)
+                for(int c=0;c<words.Length;c++)
+                        for(int i=0;i<100;i++)
+                        {
+                            if (c == 1)
+                                if(int.Parse(words[c]) == i + 1)
+                                    School[i, 0] = int.Parse(words[c]);
+                            if (c == 2)
+                                School[i, 1] += int.Parse(words[c]);
+                        }
+                for (int i = 0; i < 100; i++)
                 {
-                    mas[i, 3] = mas[i, 2] / mas[i, 1];
+                    for (int j = 0; j < 2; j++)
+                        Console.Write($"{School[i, j]} \t");
+                    Console.WriteLine();
                 }
-                counter++;
+                    
+                        
+                count++;
             }
-            return mas;
-        }
-        static void Solution2(double [,] mas)
-        {
-            double max = -1;
-            for(int i=0;i<100;i++)
-                if (mas[i, 3] > max)
-                    max = mas[i, 3];
-            for(int i=0;i<100;i++)
-            {
-                if (mas[i, 3] == max)
-                    Console.WriteLine("Самый высокий средний балл ({0}) у школы {1}", mas[i,3], mas[i, 0]);
-            }
-        }
-        static void Out(double [,] mas)
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                if (mas[i, 0] == 0)
-                    break;
-                for (int j = 0; j < 4; j++)
-                    Console.Write($"{mas[i, j]} \t");
-                Console.WriteLine();
-            }
-        }
-    }  
+        }*/
+
+    }
+
 }
