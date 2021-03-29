@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _3LR
+namespace _4LR
 {
     class Rational
     {
@@ -30,6 +30,14 @@ namespace _3LR
                 this.sign = -1;
             else
                 this.sign = 1;
+        }
+        public int number(Rational num, int c)
+        {
+            int a, b;
+            a = num.a; b = num.b;
+            if (c == 1)
+                return a*num.sign;
+            else return b;
         }
         public override string ToString()
         {

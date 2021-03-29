@@ -2,13 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _3LR
+namespace _7LR
 {
     class Rational
     {
         private int a;
         private int b;
         private int sign;
+        public int Nominator()
+        {
+            return this.a;
+        }
+        public int Denominator()
+        {
+            return this.b;
+        }
+        public void Zero()
+        {
+            this.a = 0;
+            this.b = 1;
+        }
+        public Rational Fraction(Rational R)
+        {
+            return R;
+        }
         public Rational(int a, int b)
         {
             if (b == 0)
@@ -163,7 +180,7 @@ namespace _3LR
         {
             return new Rational(a) != b;
         }
-        private int CompareTo(Rational that)
+        private int CompareToo(Rational that)
         {
             if (this.Equals(that))
             {
@@ -179,7 +196,7 @@ namespace _3LR
         }
         public static bool operator >(Rational a, Rational b)
         {
-            return a.CompareTo(b) > 0;
+            return a.CompareToo(b) > 0;
         }
         public static bool operator >(Rational a, int b)
         {
@@ -191,7 +208,7 @@ namespace _3LR
         }
         public static bool operator <(Rational a, Rational b)
         {
-            return a.CompareTo(b) < 0;
+            return a.CompareToo(b) < 0;
         }
         public static bool operator <(Rational a, int b)
         {
@@ -203,7 +220,7 @@ namespace _3LR
         }
         public static bool operator >=(Rational a, Rational b)
         {
-            return a.CompareTo(b) >= 0;
+            return a.CompareToo(b) >= 0;
         }
         public static bool operator >=(Rational a, int b)
         {
@@ -215,7 +232,7 @@ namespace _3LR
         }
         public static bool operator <=(Rational a, Rational b)
         {
-            return a.CompareTo(b) <= 0;
+            return a.CompareToo(b) <= 0;
         }
         public static bool operator <=(Rational a, int b)
         {
